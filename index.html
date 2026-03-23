@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>수업 사진 -> 노션</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gmarket+Sans:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #08111f;
+      --panel: rgba(10, 22, 38, 0.86);
+      --panel-strong: #0f1f34;
+      --line: rgba(157, 189, 255, 0.18);
+      --text: #edf4ff;
+      --muted: #8ca6c7;
+      --accent: #43c6ac;
+      --accent-2: #2f80ed;
+      --warn: #f6ad55;
+      --error: #ff7676;
+      --ok: #63e6be;
+      --radius: 18px;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Noto Sans KR", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(67, 198, 172, 0.18), transparent 35%),
+        radial-gradient(circle at top right, rgba(47, 128, 237, 0.22), transparent 34%),
+        linear-gradient(180deg, #06101c, #091626 42%, #0a1422 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 26px 26px;
+      pointer-events: none;
+      opacity: 0.35;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 520px);
+      margin: 0 auto;
+      padding: 28px 18px 48px;
+    }
+
+    .hero {
+      margin-bottom: 18px;
+      padding: 22px 20px;
+      border-radius: 24px;
+      background: linear-gradient(145deg, rgba(67, 198, 172, 0.12), rgba(47, 128, 237, 0.12));
+      border: 1px solid rgba(157, 189, 255, 0.16);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: #d8ecff;
+      background: rgba(255,255,255,0.08);
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-family: "Gmarket Sans", sans-serif;
+      font-size: 26px;
+      line-height: 1.24;
+      letter-spacing: -0.04em;
+      margin-bottom: 8px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 18px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(8, 17, 31, 0.62);
+      border: 1px solid var(--line);
+      font-size: 13px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--warn);
+      flex: 0 0 auto;
+    }
+
+    .dot.ok {
+      background: var(--ok);
+      box-shadow: 0 0 12px rgba(99, 230, 190, 0.8);
+    }
+
+    .dot.error {
+      background: var(--error);
+      box-shadow: 0 0 12px rgba(255, 118, 118, 0.7);
+    }
+
+    .card {
+      margin-top: 16px;
+      padding: 18px;
+      border-radius: var(--radius);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .card-title {
+      font-family: "Gmarket Sans", sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      margin-bottom: 14px;
+    }
+
+    .desc {
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 420px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+
+    .label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    input,
+    select {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: var(--panel-strong);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 12px 13px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: rgba(99, 230, 190, 0.8);
+    }
+
+    .days {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .day-btn {
+      border: 1px solid var(--line);
+      background: var(--panel-strong);
+      color: var(--muted);
+      border-radius: 10px;
+      padding: 8px 11px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .day-btn.on {
+      color: #06101c;
+      background: linear-gradient(135deg, var(--accent), #79bfff);
+      border-color: transparent;
+      font-weight: 700;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 13px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      margin-bottom: 12px;
+    }
+
+    .toggle-row span {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .toggle-row input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent);
+    }
+
+    .btn {
+      width: 100%;
+      border: 0;
+      border-radius: 14px;
+      padding: 14px;
+      color: white;
+      font-size: 15px;
+      font-family: "Gmarket Sans", sans-serif;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    }
+
+    .btn.secondary {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--line);
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .schedule-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .schedule-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      font-size: 13px;
+    }
+
+    .schedule-meta {
+      color: var(--muted);
+      margin-top: 4px;
+      font-size: 12px;
+    }
+
+    .link-btn {
+      border: 0;
+      background: none;
+      color: #ffd9d9;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .upload-box {
+      position: relative;
+      border: 2px dashed rgba(157, 189, 255, 0.24);
+      border-radius: 20px;
+      padding: 30px 18px;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(67, 198, 172, 0.08), rgba(47, 128, 237, 0.06));
+      cursor: pointer;
+    }
+
+    .upload-box.disabled {
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .upload-box strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .upload-box p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .preview {
+      position: relative;
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .preview button {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 24px;
+      height: 24px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.65);
+      color: white;
+      cursor: pointer;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      background: rgba(0,0,0,0.45);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .preview.uploading .overlay,
+    .preview.done .overlay,
+    .preview.error .overlay {
+      opacity: 1;
+    }
+
+    .preview.done .overlay {
+      background: rgba(67, 198, 172, 0.36);
+    }
+
+    .preview.error .overlay {
+      background: rgba(255, 118, 118, 0.4);
+    }
+
+    .progress {
+      margin-top: 12px;
+      display: none;
+    }
+
+    .bar {
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.1);
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transition: width 0.2s ease;
+    }
+
+    .progress-text {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%) translateY(100px);
+      min-width: 220px;
+      max-width: calc(100vw - 36px);
+      border-radius: 999px;
+      padding: 12px 16px;
+      background: rgba(8, 17, 31, 0.95);
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-size: 13px;
+      text-align: center;
+      transition: transform 0.25s ease;
+      z-index: 99;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <div class="eyebrow">아이폰 -> LG 노트북 -> 노션</div>
+      <h1>사진 찍자마자<br>수업 노트로 보내기</h1>
+      <p>수업 시간에만 열리게 할 수 있고, 업로드가 끝나면 노트북 클립보드에도 바로 복사됩니다.</p>
+      <div class="status">
+        <div class="dot" id="statusDot"></div>
+        <div id="statusText">서버 연결을 확인하는 중입니다.</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-title">1. 접속 코드</div>
+      <div class="desc">노트북 터미널에 보이는 6자리 접속 코드를 한 번만 저장하면 됩니다.</div>
+      <div class="field">
+        <label class="label" for="accessToken">접속 코드</label>
+        <input id="accessToken" type="password" placeholder="예: 123456">
+      </div>
+      <button class="btn secondary" id="saveAccessBtn">접속 코드 저장</button>
+    </section>
+
+    <section class="card">
+      <div class="card-title">2. 수업 시간표</div>
+      <div class="grid-2">
+        <div class="field">
+          <label class="label" for="startTime">시작 시간</label>
+          <input id="startTime" type="time" value="09:00">
+        </div>
+        <div class="field">
+          <label class="label" for="endTime">종료 시간</label>
+          <input id="endTime" type="time" value="10:30">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">요일</label>
+        <div class="days">
+          <button class="day-btn on" data-day="1" type="button">월</button>
+          <button class="day-btn on" data-day="2" type="button">화</button>
+          <button class="day-btn on" data-day="3" type="button">수</button>
+          <button class="day-btn on" data-day="4" type="button">목</button>
+          <button class="day-btn on" data-day="5" type="button">금</button>
+          <button class="day-btn" data-day="6" type="button">토</button>
+          <button class="day-btn" data-day="0" type="button">일</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label" for="subjectName">과목명</label>
+        <input id="subjectName" type="text" placeholder="예: 운영체제">
+      </div>
+
+      <button class="btn primary" id="addScheduleBtn">시간표 추가</button>
+      <div class="schedule-list" id="scheduleList"></div>
+    </section>
+
+    <section class="card">
+      <div class="card-title">3. 노션 목적지</div>
+      <div class="field">
+        <label class="label" for="destinationMode">업로드 방식</label>
+        <select id="destinationMode">
+          <option value="page">기존 페이지에 이어 붙이기</option>
+          <option value="database">데이터베이스에 새 페이지 만들기</option>
+          <option value="both">둘 다</option>
+          <option value="local">노트북 저장 + 클립보드만</option>
+        </select>
+      </div>
+
+      <div class="field" id="pageIdField">
+        <label class="label" for="notionPageId">노션 페이지 ID 또는 URL</label>
+        <input id="notionPageId" type="text" placeholder="기존 페이지 URL을 그대로 붙여도 됩니다.">
+      </div>
+
+      <div class="field" id="databaseIdField">
+        <label class="label" for="notionDatabaseId">노션 데이터베이스 ID 또는 URL</label>
+        <input id="notionDatabaseId" type="text" placeholder="DB URL을 그대로 붙여도 됩니다.">
+      </div>
+
+      <div class="field">
+        <label class="label" for="blockTitle">본문 캡션</label>
+        <input id="blockTitle" type="text" placeholder="비워두면 과목명과 시간으로 자동 생성됩니다.">
+      </div>
+
+      <div class="field">
+        <label class="label" for="databasePageTitle">데이터베이스 새 페이지 제목</label>
+        <input id="databasePageTitle" type="text" placeholder="비워두면 과목명 + 시간으로 자동 생성됩니다.">
+      </div>
+
+      <button class="btn secondary" id="saveConfigBtn">노션 설정 저장</button>
+    </section>
+
+    <section class="card">
+      <div class="card-title">4. 즉시 업로드</div>
+      <div class="toggle-row">
+        <span>사진을 고르거나 찍은 직후 자동 업로드</span>
+        <input id="autoUpload" type="checkbox" checked>
+      </div>
+      <div class="upload-box" id="uploadBox">
+        <input id="fileInput" type="file" accept="image/*" capture="environment" multiple>
+        <strong>사진 찍기 / 고르기</strong>
+        <p>수업 시간 안이면 바로 업로드되고, 끝나면 노트북 클립보드에 복사됩니다.</p>
+      </div>
+      <div class="preview-grid" id="previewGrid"></div>
+      <div class="progress" id="progressWrap">
+        <div class="bar"><div class="fill" id="progressFill"></div></div>
+        <div class="progress-text" id="progressText">업로드 중입니다.</div>
+      </div>
+      <div style="height: 12px;"></div>
+      <button class="btn primary" id="uploadBtn" disabled>지금 업로드</button>
+    </section>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const DAY_NAMES = ["일", "월", "화", "수", "목", "금", "토"];
+    const CONFIG_KEY = "class-photo-config-v2";
+    const SCHEDULE_KEY = "class-photo-schedules-v2";
+
+    let runtime = null;
+    let files = [];
+    let isUploading = false;
+    let activeSession = null;
+    let schedules = JSON.parse(localStorage.getItem(SCHEDULE_KEY) || "[]");
+    let config = JSON.parse(localStorage.getItem(CONFIG_KEY) || "{}");
+
+    const $ = (id) => document.getElementById(id);
+
+    window.addEventListener("load", init);
+
+    async function init() {
+      bindEvents();
+      hydrateInputs();
+      renderSchedules();
+      updateDestinationFields();
+      checkScheduleActive();
+      setInterval(checkScheduleActive, 30000);
+      await fetchRuntime();
+    }
+
+    function bindEvents() {
+      $("saveAccessBtn").addEventListener("click", saveAccessToken);
+      $("addScheduleBtn").addEventListener("click", addSchedule);
+      $("saveConfigBtn").addEventListener("click", () => saveConfig(false));
+      $("destinationMode").addEventListener("change", updateDestinationFields);
+      $("autoUpload").addEventListener("change", () => {
+        config.autoUpload = $("autoUpload").checked;
+        persistConfig();
+      });
+      $("uploadBox").addEventListener("click", () => {
+        if ($("uploadBox").classList.contains("disabled")) return;
+        $("fileInput").click();
+      });
+      $("fileInput").addEventListener("change", (event) => handleFiles(event.target.files));
+      $("uploadBtn").addEventListener("click", uploadPhotos);
+      document.querySelectorAll(".day-btn").forEach((btn) => {
+        btn.addEventListener("click", () => btn.classList.toggle("on"));
+      });
+    }
+
+    function hydrateInputs() {
+      $("accessToken").value = config.accessToken || "";
+      $("notionPageId").value = config.notionPageId || "";
+      $("notionDatabaseId").value = config.notionDatabaseId || "";
+      $("blockTitle").value = config.blockTitle || "";
+      $("databasePageTitle").value = config.databasePageTitle || "";
+      $("destinationMode").value = config.destinationMode || "page";
+      $("autoUpload").checked = config.autoUpload !== false;
+    }
+
+    async function fetchRuntime() {
+      try {
+        const response = await fetch("/api/runtime", { cache: "no-store" });
+        runtime = await response.json();
+        const message = runtime.notionConfigured
+          ? "서버 연결 완료. 수업 시간이면 촬영 후 바로 업로드할 수 있어요."
+          : "서버 연결 완료. 현재는 노션 키가 없어 노트북 저장 + 클립보드만 가능합니다.";
+        setStatus("ok", message);
+      } catch (_error) {
+        setStatus("error", "서버에 연결되지 않았습니다. 노트북에서 node server.js를 실행해 주세요.");
+      }
+    }
+
+    function setStatus(type, message) {
+      const dot = $("statusDot");
+      dot.className = "dot";
+      if (type === "ok") dot.classList.add("ok");
+      if (type === "error") dot.classList.add("error");
+      $("statusText").textContent = message;
+    }
+
+    function saveAccessToken() {
+      config.accessToken = $("accessToken").value.trim();
+      persistConfig();
+      showToast("접속 코드를 저장했습니다.");
+    }
+
+    function saveConfig(silent = false) {
+      config.destinationMode = $("destinationMode").value;
+      config.notionPageId = $("notionPageId").value.trim();
+      config.notionDatabaseId = $("notionDatabaseId").value.trim();
+      config.blockTitle = $("blockTitle").value.trim();
+      config.databasePageTitle = $("databasePageTitle").value.trim();
+      config.autoUpload = $("autoUpload").checked;
+      persistConfig();
+      updateDestinationFields();
+      if (!silent) {
+        showToast("노션 설정을 저장했습니다.");
+      }
+    }
+
+    function persistConfig() {
+      localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
+    }
+
+    function addSchedule() {
+      const start = $("startTime").value;
+      const end = $("endTime").value;
+      const subject = $("subjectName").value.trim() || "수업";
+      const days = [...document.querySelectorAll(".day-btn.on")].map((btn) => Number(btn.dataset.day));
+
+      if (!start || !end) {
+        showToast("시작 시간과 종료 시간을 입력해 주세요.");
+        return;
+      }
+      if (start >= end) {
+        showToast("종료 시간은 시작 시간보다 뒤여야 합니다.");
+        return;
+      }
+      if (days.length === 0) {
+        showToast("요일을 하나 이상 선택해 주세요.");
+        return;
+      }
+
+      schedules.push({
+        id: Date.now(),
+        start,
+        end,
+        subject,
+        days,
+      });
+
+      schedules = sortSchedules(schedules);
+      localStorage.setItem(SCHEDULE_KEY, JSON.stringify(schedules));
+      renderSchedules();
+      checkScheduleActive();
+      showToast("시간표를 추가했습니다.");
+    }
+
+    function renderSchedules() {
+      const list = $("scheduleList");
+      if (schedules.length === 0) {
+        list.innerHTML = '<div class="schedule-item">등록된 시간표가 없습니다.</div>';
+        return;
+      }
+
+      list.innerHTML = schedules.map((schedule) => `
+        <div class="schedule-item">
+          <div>
+            <div>${escapeHtml(schedule.subject)}</div>
+            <div class="schedule-meta">${schedule.start} ~ ${schedule.end} · ${schedule.days.map((d) => DAY_NAMES[d]).join(", ")}</div>
+          </div>
+          <button class="link-btn" type="button" onclick="deleteSchedule(${schedule.id})">삭제</button>
+        </div>
+      `).join("");
+    }
+
+    window.deleteSchedule = function deleteSchedule(id) {
+      schedules = schedules.filter((item) => item.id !== id);
+      schedules = sortSchedules(schedules);
+      localStorage.setItem(SCHEDULE_KEY, JSON.stringify(schedules));
+      renderSchedules();
+      checkScheduleActive();
+    };
+
+    function sortSchedules(list) {
+      return [...list].sort((a, b) => {
+        const dayDiff = Math.min(...a.days) - Math.min(...b.days);
+        if (dayDiff !== 0) return dayDiff;
+        return a.start.localeCompare(b.start);
+      });
+    }
+
+    function checkScheduleActive() {
+      const now = new Date();
+      const currentDay = now.getDay();
+      const currentTime = now.toTimeString().slice(0, 5);
+
+      activeSession = schedules.find((schedule) => (
+        schedule.days.includes(currentDay) &&
+        schedule.start <= currentTime &&
+        schedule.end >= currentTime
+      )) || null;
+
+      const box = $("uploadBox");
+      if (activeSession) {
+        box.classList.remove("disabled");
+        setStatus("ok", `${activeSession.subject} 수업 시간입니다. 지금 찍으면 바로 올라갑니다.`);
+      } else if (schedules.length === 0) {
+        box.classList.remove("disabled");
+      } else {
+        box.classList.add("disabled");
+        const nextClass = getNextClass(now);
+        setStatus("ok", nextClass
+          ? `지금은 수업 시간이 아닙니다. 다음 수업: ${nextClass.subject} ${nextClass.dayLabel} ${nextClass.start}`
+          : "지금은 수업 시간이 아닙니다.");
+      }
+    }
+
+    function getNextClass(now) {
+      const candidates = [];
+      const currentDay = now.getDay();
+      const currentTime = now.toTimeString().slice(0, 5);
+
+      schedules.forEach((schedule) => {
+        schedule.days.forEach((day) => {
+          let distance = day - currentDay;
+          if (distance < 0 || (distance === 0 && schedule.start <= currentTime)) {
+            distance += 7;
+          }
+          candidates.push({
+            subject: schedule.subject,
+            start: schedule.start,
+            day,
+            dayLabel: DAY_NAMES[day],
+            distance,
+          });
+        });
+      });
+
+      candidates.sort((a, b) => {
+        if (a.distance !== b.distance) return a.distance - b.distance;
+        return a.start.localeCompare(b.start);
+      });
+
+      return candidates[0] || null;
+    }
+
+    function updateDestinationFields() {
+      const mode = $("destinationMode").value;
+      $("pageIdField").style.display = mode === "page" || mode === "both" ? "block" : "none";
+      $("databaseIdField").style.display = mode === "database" || mode === "both" ? "block" : "none";
+    }
+
+    function handleFiles(fileList) {
+      const selected = Array.from(fileList || []);
+      if (selected.length === 0) return;
+
+      files.push(...selected);
+      renderPreviews();
+      updateUploadButton();
+      $("fileInput").value = "";
+
+      if ($("autoUpload").checked) {
+        uploadPhotos();
+      }
+    }
+
+    function renderPreviews() {
+      $("previewGrid").innerHTML = files.map((file, index) => `
+        <div class="preview" id="preview-${index}">
+          <img src="${URL.createObjectURL(file)}" alt="">
+          <div class="overlay" id="overlay-${index}"></div>
+          <button type="button" onclick="removeFile(${index})">×</button>
+        </div>
+      `).join("");
+    }
+
+    window.removeFile = function removeFile(index) {
+      if (isUploading) return;
+      files.splice(index, 1);
+      renderPreviews();
+      updateUploadButton();
+    };
+
+    function updateUploadButton() {
+      $("uploadBtn").disabled = files.length === 0 || isUploading;
+    }
+
+    async function uploadPhotos() {
+      if (isUploading || files.length === 0) return;
+      if (schedules.length > 0 && !activeSession) {
+        showToast("등록한 수업 시간 안에서만 자동 업로드됩니다.");
+        return;
+      }
+
+      const token = $("accessToken").value.trim();
+      if (!token) {
+        showToast("먼저 접속 코드를 저장해 주세요.");
+        return;
+      }
+
+      saveConfig(true);
+      isUploading = true;
+      updateUploadButton();
+      $("progressWrap").style.display = "block";
+
+      const workingFiles = [...files];
+
+      for (let i = 0; i < workingFiles.length; i += 1) {
+        const item = $("preview-" + i);
+        const overlay = $("overlay-" + i);
+        const file = workingFiles[i];
+
+        item.classList.add("uploading");
+        overlay.textContent = "⏳";
+        $("progressFill").style.width = Math.round((i / workingFiles.length) * 100) + "%";
+        $("progressText").textContent = `${i + 1} / ${workingFiles.length} 업로드 중`;
+
+        const formData = new FormData();
+        formData.append("photo", file);
+        formData.append("destinationMode", $("destinationMode").value);
+        formData.append("pageId", $("notionPageId").value.trim());
+        formData.append("databaseId", $("notionDatabaseId").value.trim());
+        formData.append("subject", activeSession?.subject || $("subjectName").value.trim() || "수업");
+        formData.append("blockTitle", $("blockTitle").value.trim());
+        formData.append("databasePageTitle", $("databasePageTitle").value.trim());
+
+        try {
+          const response = await fetch("/api/upload", {
+            method: "POST",
+            headers: {
+              "x-access-token": token,
+            },
+            body: formData,
+          });
+          const data = await response.json();
+          if (!response.ok || !data.ok) {
+            throw new Error(data.error || "업로드 실패");
+          }
+
+          item.classList.remove("uploading");
+          item.classList.add("done");
+          overlay.textContent = "✅";
+        } catch (error) {
+          item.classList.remove("uploading");
+          item.classList.add("error");
+          overlay.textContent = "❌";
+          showToast(error.message || "업로드 중 문제가 발생했습니다.");
+        }
+      }
+
+      $("progressFill").style.width = "100%";
+      $("progressText").textContent = "완료";
+      showToast("업로드를 마쳤습니다. 노트북 클립보드도 갱신됐어요.");
+
+      setTimeout(() => {
+        files = [];
+        renderPreviews();
+        $("progressWrap").style.display = "none";
+        $("progressFill").style.width = "0%";
+        isUploading = false;
+        updateUploadButton();
+      }, 1100);
+    }
+
+    function showToast(message) {
+      const toast = $("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast._timer);
+      showToast._timer = setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+  </script>
+</body>
+</html>

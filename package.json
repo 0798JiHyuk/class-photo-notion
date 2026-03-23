@@ -1,0 +1,16 @@
+{
+  "name": "class-photo-notion",
+  "version": "1.0.0",
+  "description": "수업 사진 → 노션 자동 업로드",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js",
+    "install-deps": "npm install express multer @notionhq/client"
+  },
+  "dependencies": {
+    "@notionhq/client": "^2.2.15",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1"
+  }
+}
