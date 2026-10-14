@@ -46,7 +46,9 @@ const upload = multer({
 let latestUpload = null;
 
 app.use(express.json());
-app.use(express.static(__dirname, { index: "index.html" }));
+// Serve only the application entry point; never expose source or uploaded files.
+app.get("/", (_req, res) => res.sendFile(path.join(__dirname, "index.html")));
+app.get("/index.html", (_req, res) => res.sendFile(path.join(__dirname, "index.html")));
 
 app.get("/ping", (_req, res) => {
   res.json({
